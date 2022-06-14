@@ -1,0 +1,819 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+    <style>
+        body {
+            background: #eaeaea;
+            margin-top: 20px;
+        }
+
+        .profile-info-list {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .friend-list,
+        .img-grid-list {
+            margin: -1px;
+            list-style-type: none;
+        }z
+
+        .profile-info-list > li.title {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: #8a8a8f;
+            padding: 0 0 0.3125rem;
+        }
+
+        .profile-info-list > li + li.title {
+            padding-top: 1.5625rem;
+        }
+
+        .profile-info-list > li {
+            padding: 0.625rem 0;
+        }
+
+        .profile-info-list > li .field {
+            font-weight: 700;
+        }
+
+        .profile-info-list > li .value {
+            color: #666;
+        }
+
+        .profile-info-list > li.img-list a {
+            display: inline-block;
+        }
+
+        .profile-info-list > li.img-list a img {
+            max-width: 2.25rem;
+            -webkit-border-radius: 2.5rem;
+            -moz-border-radius: 2.5rem;
+            border-radius: 2.5rem;
+        }
+
+        .coming-soon-cover img,
+        .email-detail-attachment .email-attachment .document-file img,
+        .email-sender-img img,
+        .friend-list .friend-img img,
+        .profile-header-img img {
+            max-width: 100%;
+        }
+
+        .table.table-profile th {
+            border: none;
+            color: #000;
+            padding-bottom: 0.3125rem;
+            padding-top: 0;
+        }
+
+        .table.table-profile td {
+            border-color: #c8c7cc;
+        }
+
+        .table.table-profile tbody + thead > tr > th {
+            padding-top: 1.5625rem;
+        }
+
+        .table.table-profile .field {
+            color: #666;
+            font-weight: 600;
+            width: 25%;
+            text-align: right;
+        }
+
+        .table.table-profile .value {
+            font-weight: 500;
+        }
+
+        .profile-header {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header .profile-header-cover {
+            background: url(https://bootdey.com/img/Content/bg1.jpg) center no-repeat;
+            background-size: 100% auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .profile-header .profile-header-cover:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0.85) 100%);
+        }
+
+        .profile-header .profile-header-content,
+        .profile-header .profile-header-tab,
+        .profile-header-img,
+        body .fc-icon {
+            position: relative;
+        }
+
+        .profile-header .profile-header-tab {
+            background: #fff;
+            list-style-type: none;
+            margin: -1.25rem 0 0;
+            padding: 0 0 0 8.75rem;
+            border-bottom: 1px solid #c8c7cc;
+            white-space: nowrap;
+        }
+
+        .profile-header .profile-header-tab > li {
+            display: inline-block;
+            margin: 0;
+        }
+
+        .profile-header .profile-header-tab > li > a {
+            display: block;
+            color: #000;
+            line-height: 1.25rem;
+            padding: 0.625rem 1.25rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border: none;
+        }
+
+        .profile-header .profile-header-tab > li.active > a,
+        .profile-header .profile-header-tab > li > a.active {
+            color: #007aff;
+        }
+
+        .profile-header .profile-header-content:after,
+        .profile-header .profile-header-content:before {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .profile-header .profile-header-content {
+            color: #fff;
+            padding: 1.25rem;
+        }
+
+        body .fc th a,
+        body .fc-ltr .fc-basic-view .fc-day-top .fc-day-number,
+        body .fc-widget-header a {
+            color: #000;
+        }
+
+        .profile-header-img {
+            float: left;
+            width: 7.5rem;
+            height: 7.5rem;
+            overflow: hidden;
+            z-index: 10;
+            margin: 0 1.25rem -1.25rem 0;
+            padding: 0.1875rem;
+            -webkit-border-radius: 0.25rem;
+            -moz-border-radius: 0.25rem;
+            border-radius: 0.25rem;
+            background: #fff;
+        }
+
+        .profile-header-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.3125rem;
+        }
+
+        .profile-container {
+            padding: 1.5625rem;
+        }
+
+        @media (max-width: 967px) {
+            .profile-header-img {
+                width: 5.625rem;
+                height: 5.625rem;
+                margin: 0;
+            }
+
+            .profile-header-info {
+                margin-left: 6.5625rem;
+                padding-bottom: 0.9375rem;
+            }
+
+            .profile-header .profile-header-tab {
+                padding-left: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .profile-header .profile-header-cover {
+                background-position: top;
+            }
+
+            .profile-header-img {
+                width: 3.75rem;
+                height: 3.75rem;
+                margin: 0;
+            }
+
+            .profile-header-info {
+                margin-left: 4.6875rem;
+                padding-bottom: 0.9375rem;
+            }
+
+            .profile-header-info h4 {
+                margin: 0 0 0.3125rem;
+            }
+
+            .profile-header .profile-header-tab {
+                white-space: nowrap;
+                overflow: scroll;
+                padding: 0;
+            }
+
+            .profile-container {
+                padding: 0.9375rem 0.9375rem 3.6875rem;
+            }
+
+            .friend-list > li {
+                float: none;
+                width: auto;
+            }
+        }
+
+        .profile-info-list {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .friend-list,
+        .img-grid-list {
+            margin: -1px;
+            list-style-type: none;
+        }
+
+        .profile-info-list > li.title {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: #8a8a8f;
+            padding: 0 0 0.3125rem;
+        }
+
+        .profile-info-list > li + li.title {
+            padding-top: 1.5625rem;
+        }
+
+        .profile-info-list > li {
+            padding: 0.625rem 0;
+        }
+
+        .profile-info-list > li .field {
+            font-weight: 700;
+        }
+
+        .profile-info-list > li .value {
+            color: #666;
+        }
+
+        .profile-info-list > li.img-list a {
+            display: inline-block;
+        }
+
+        .profile-info-list > li.img-list a img {
+            max-width: 2.25rem;
+            -webkit-border-radius: 2.5rem;
+            -moz-border-radius: 2.5rem;
+            border-radius: 2.5rem;
+        }
+
+        .coming-soon-cover img,
+        .email-detail-attachment .email-attachment .document-file img,
+        .email-sender-img img,
+        .friend-list .friend-img img,
+        .profile-header-img img {
+            max-width: 100%;
+        }
+
+        .table.table-profile th {
+            border: none;
+            color: #000;
+            padding-bottom: 0.3125rem;
+            padding-top: 0;
+        }
+
+        .table.table-profile td {
+            border-color: #c8c7cc;
+        }
+
+        .table.table-profile tbody + thead > tr > th {
+            padding-top: 1.5625rem;
+        }
+
+        .table.table-profile .field {
+            color: #666;
+            font-weight: 600;
+            width: 25%;
+            text-align: right;
+        }
+
+        .table.table-profile .value {
+            font-weight: 500;
+        }
+
+        .friend-list {
+            padding: 0;
+        }
+
+        .friend-list > li {
+            float: left;
+            width: 50%;
+        }
+
+        .friend-list > li > a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            padding: 0.625rem;
+            margin: 1px;
+            background: #fff;
+        }
+
+        .friend-list > li > a:after,
+        .friend-list > li > a:before {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .friend-list .friend-img {
+            float: left;
+            width: 3rem;
+            height: 3rem;
+            overflow: hidden;
+            background: #efeff4;
+        }
+
+        .friend-list .friend-info {
+            margin-left: 3.625rem;
+        }
+
+        .friend-list .friend-info h4 {
+            margin: 0.3125rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .friend-list .friend-info p {
+            color: #666;
+            margin: 0;
+        }
+
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,400,700);
+        body {
+            background: #e9eaed;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Open Sans Condensed', sans-serif, sans-serif;
+        }
+
+        .container {
+        }
+
+        .wrapper {
+        }
+
+        #header {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .navbar {
+            border-radius: 0;
+            margin-bottom: 0;
+            border: none;
+            font-family: 'Open Sans Condensed', sans-serif, sans-serif;
+        }
+
+        .navbar > li > a {
+        }
+
+        .navbar-header {
+        }
+
+        .navbar-brand {
+            width: 160px;
+            height: 160px;
+            float: left;
+            padding: 0;
+            margin-top: -130px;
+            overflow: hidden;
+            border: 3px solid #eee;
+            margin-left: 15px;
+            background: #333;
+            text-align: center;
+            line-height: 160px;
+            color: #fff !important;
+            font-size: 2em;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .site-name {
+            color: #fff;
+            font-size: 2.4em;
+            float: left;
+            margin-top: -75px !important;
+            margin-left: 15px;
+            font-family: 'Open Sans Condensed', sans-serif, sans-serif;
+        }
+
+        .site-description {
+            color: #fff;
+            font-size: 1.3em;
+            float: left;
+            margin-top: -30px !important;
+            margin-left: 15px;
+        }
+
+        .main-menu {
+            position: absolute;
+            left: 190px;
+        }
+
+        .slider,
+        .carousel {
+            max-height: 360px;
+            overflow: hidden;
+        }
+
+        .carousel-control .fa-angle-left,
+        .carousel-control .fa-angle-right {
+            position: absolute;
+            top: 50%;
+            font-size: 2em;
+            z-index: 5;
+            display: inline-block;
+        }
+
+        .carousel-control {
+            background-color: transparent;
+            background-image: none !important;
+        }
+
+        .carousel-control:hover,
+        .carousel-control:focus {
+            color: #fff;
+            text-decoration: none;
+            background-color: transparent !important;
+            background-image: none !important;
+            outline: 0;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                max-width: 100px;
+                max-height: 100px;
+                float: left;
+                margin-top: -65px;
+                margin-left: 15px;
+                -webkit-transition: all 0.3s ease-in-out;
+                -moz-transition: all 0.3s ease-in-out;
+                -o-transition: all 0.3s ease-in-out;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .navbar {
+                border-radius: 0;
+                margin-bottom: 0;
+                border: none;
+            }
+
+            .main-menu {
+                left: 0;
+                position: relative;
+            }
+        }
+
+        @media (max-width: 490px) {
+            .site-name {
+                color: #fff;
+                font-size: 1.5em;
+                float: left;
+                line-height: 20px;
+                margin-top: -100px !important;
+                margin-left: 125px;
+            }
+
+            .site-description {
+                color: #fff;
+                font-size: 1.3em;
+                float: left;
+                margin-top: -80px !important;
+                margin-left: 125px;
+            }
+        }
+
+    </style>
+    <style>
+        #box {
+            padding-top: 120px;
+        }
+
+    </style>
+    <script>
+    window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+    <div class="main" style="width:-webkit-fill-available;">
+        <!-- MAIN CONTENT -->
+        {% if message %}
+            <div id="delete-col" class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <strong>Deleted!</strong> NFT Deleted Successfully..
+            </div>
+        {% endif %}
+        <div class="row panel-body ">
+            <div class="col-12">
+            </div>
+            <div class="col-12 " style="overflow:auto;">
+            </div>
+            <div class="container">
+                <div id="content" class="content p-0">
+                    <link href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <header id="header">
+                                <div class="slider">
+                                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"
+                                         data-interval="500">
+                                        <div class="carousel-inner" role="listbox">
+                                            <div class="item active">
+                                                <img src="{{ collection_obj.logo_image.url }}"
+                                                     style="width:1000px;height:300px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </header>
+                        </div>
+                        <div class="col-md-8 hidden-xs hidden-sm">
+                            <ul class="profile-info-list">
+                                <h3 class="title" style="color:#3895d3;font-weight:bold">COLLECTION INFORMATION</h3>
+                                <div class="d-flex name-email">
+                                    <div class="form-group"><label class="label-font mr-2">Name: </label><span
+                                            class="field-value">{{ collection_obj.name }}</span></div>
+                                </div>
+                                <div class="d-flex name-email">
+                                    <div class="form-group"><label class="label-font mr-2">Description: </label><span
+                                            class="field-value">{{ collection_obj.description }}</span></div>
+                                </div>
+                                <div class="d-flex name-email">
+                                    <div class="form-group"><label class="label-font mr-2">Category: </label><span
+                                            class="field-value">{{ collection_obj.category.name }}</span></div>
+                                </div>
+                                <div class="d-flex name-email">
+                                    <div class="form-group"><label class="label-font mr-2">Created at: </label>
+                                        <span class="field-value">{{ collection_obj.created_at }}</span></div>
+                                </div>
+                                <div class="d-flex name-email">
+                                    <div class="form-group"><label class="label-font mr-2">Owner: </label><span
+                                            class="field-value"> {{ collection_obj.user.first_name }} ({{ collection_obj.user.email }})</span>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'nft_management:list-collection' %}" style="float:right; margin-right: 40px"
+               class="btn btn-danger">Close</a>
+
+            <section id="box">
+                <div class="container-fluid">
+                    <!-- DRAG/DROP COLUMNS REORDER -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">NFT's</h3>
+                        </div>
+                        <div class="panel-body ">
+                            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Sr No.</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
+                                    <th>Royalty</th>
+                                    <th>Size</th>
+                                    <th>No_of_copies</th>
+                                    <th>Sale_type</th>
+                                    <th>Owner</th>
+                                    <th>Price</th>
+                                    <th colspan="2">Operations</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for nft_obj in nft %}
+                                    {% if nft_obj %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ nft_obj.name }}</td>
+                                            <td>{{ nft_obj.description }}</td>
+                                            <td><img src="{{ nft_obj.image.url }} "
+                                                     style="width:40px;height:40px;border-radius:10px"></td>
+                                            <td>{{ nft_obj.royalty }}</td>
+                                            <td>{{ nft_obj.size }}</td>
+                                            <td>{{ nft_obj.no_of_copies }}</td>
+                                            <td>{{ nft_obj.sale_type }}</td>
+                                            <td>{{ nft_obj.owner }}</td>
+                                            <td>{{ nft_obj.price }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#{{ nft_obj.id }}">
+                                                    <a style="text-decoration:none; color:white"
+                                                    ><i class="fa fa-eye"></i> View</a>
+                                                </button>
+                                                <div class="modal fade" id="{{ nft_obj.id }}" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="justify-content-center modal-header">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <h4 class="mb-0 mb-md-3 mt-0"
+                                                                            style="text-align:center"> NFT
+                                                                            Detail</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form class="text-left">
+                                                                    <div class="d-flex name-email">
+                                                                        <div class="flex-fill form-group">
+                                                                            <label class="label-font mr-2">Image: </label>
+                                                                            <div class="card ">
+                                                                                <div class="card-body"
+                                                                                     style="margin-left: 120px">
+                                                                                    <img src="{{ nft_obj.image.url }}"
+                                                                                         style="width:237px;height:233px;border-radius:10px">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex name-email">
+                                                                        <div class="form-group">
+                                                                            <label class="label-font mr-2">Name: </label>
+                                                                            <span class="field-value"> {{ nft_obj.name }} </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex name-email">
+                                                                        <div class="form-group">
+                                                                            <label class="label-font">Price
+                                                                                : </label>
+                                                                            <span class="field-value">{{ nft_obj.name }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex name-email">
+                                                                        <div class="form-group">
+                                                                            <label class="label-font mr-2">Status
+                                                                                : </label>
+                                                                            <span class="field-value">{{ nft_obj.sale_type }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex name-email">
+                                                                        <div class="form-group">
+                                                                            <label class="label-font mr-2">Creator
+                                                                                : </label>
+                                                                            <span class="field-value">{{ nft_obj.owner }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex name-email">
+                                                                        <div class="form-group">
+                                                                            <label class="label-font mr-2">Owner
+                                                                                : </label>
+                                                                            <span class="field-value">{{ nft_obj.owner }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                        data-target="#{{ nft_obj.id }}2">
+                                                    <a style="text-decoration:none; color:white"
+                                                    ><i class="fa fa-trash"></i> Delete</a>
+                                                </button>
+                                                <!-- Delete Modal -->
+                                                <div class="modal fade" id="{{ nft_obj.id }}2" tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Confirm
+                                                                    Delete</h5>
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure! you want to Delete the
+                                                                    Collection?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">
+                                                                    Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger"><a
+                                                                        style="text-decoration:none; color:white"
+                                                                        href="{% url 'nft_management:specific-delete-collection' nft_obj.id collection_obj.id %}">Confirm</a>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td>
+                                                <p>No NFT's against Collection</p>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- View Modal -->
+
+
+
+
+{% endblock content %}

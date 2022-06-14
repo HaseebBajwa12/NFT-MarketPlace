@@ -1,0 +1,118 @@
+{% extends 'nft_admin/index.html' %}
+
+{% block content %}
+<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="content-heading clearfix">
+            <div class="heading-left">
+                <h1 class="page-title">Add Collection</h1>
+                <p class="page-subtitle">Add your Collection</p>
+            </div>
+            <ul class="breadcrumb">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#">Forms</a></li>
+                <li class="active">Form Layouts</li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- SUBMIT TICKETS -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Add Collection</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="name" class="form-control" required>
+                                            {% if errors and errors.name %}
+                                            <p>{{ errors.name }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-attachment" class="col-sm-3 control-label">
+                                            Logo Image</label>
+                                        <div class="col-md-9">
+                                            <input type="file" name="logo_image">
+                                            {% if errors and errors.logo_image %}
+                                            <p>{{ errors.logo_image }}</p>
+                                            {% endif %}
+                                            <p class="help-block">
+                                                <em>Valid file type: .jpg, .png File size max: 1 MB</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-attachment" class="col-sm-3 control-label">
+                                            Banner Image</label>
+                                        <div class="col-md-9">
+                                            <input type="file" name="banner_image">
+                                            {% if errors and errors.banner_image %}
+                                            <p>{{ errors.banner_image }}</p>
+                                            {% endif %}
+                                            <p class="help-block">
+                                                <em>Valid file type: .jpg, .png File size max: 1 MB</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-3 control-label">Description</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" name="description"
+                                                      rods="5" cols="30"  placeholder="Message"></textarea>
+                                            {% if errors and errors.description %}
+                                            <p>{{ errors.description }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category" class="col-sm-3 control-label">Category</label>
+                                        <div class="col-sm-6">
+                                            <select id="category" name="category" class="form-control" required>
+                                                {% for category in category_list %}
+                                                <option name="category" value="{{ category.id }}">{{ category }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-success btn-floating">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user" class="col-sm-3 control-label">User</label>
+                                        <div class="col-sm-6">
+                                            <select id="user" name="user" class="form-control" required>
+                                                {% for user in user_list %}
+                                                <option name="user" value="{{ user.id }}">{{ user }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-success btn-floating">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <input type="submit" class=" btn btn-success" value="Create Collection">
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

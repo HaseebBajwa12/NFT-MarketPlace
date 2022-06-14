@@ -1,0 +1,134 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+
+  <script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  var y = document.getElementById("myDIV2");
+  console.log(x.style.display);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.height = "120px";
+  } else {
+    x.style.display = "none";
+    y.style.height = "80px";
+  }
+}
+
+</script>
+<script>
+    window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+
+{% if message %}
+            <div id="delete-col" class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <strong>Deleted!</strong> NFT Deleted Successfully..
+            </div>
+        {% endif %}
+
+<div class="container-fluid">
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+       <div class="panel-heading">
+            <h3 class="panel-title">Wallet Transaction</h3>
+        </div>
+        <div class="panel-heading" id="myDIV2" style="height:80px">
+         <br>
+        <button class="btn btn-success" style="float:right" type="button" onclick="myFunction()">Filter</button>
+        <form id="myDIV" style="display:none" class="form-horizontal" method="get">
+            {% csrf_token %}
+            <br><br>
+            <fieldset style="margin-bottom:40px">
+            <!--                {{myfilter.form.as_p}}-->
+                <div class="form-group col-md-2">
+                    <label for="id_wallet" class="col-form-label">Wallet</label>
+                       {{ myfilter.form.wallet }}
+                </div>
+                <!--                    </div>-->
+                <div class="form-group col-md-2" style="margin-left: 1%; ">
+                  <label for="id_transaction_type" class="col-form-label">Transaction Type</label>
+                    {{ myfilter.form.transaction_type }}
+                </div>
+                <!--                    </div>-->
+                <div class="form-group col-md-2" style="margin-left: 1%;">
+                   <label for="id_transaction_type" class="col-form-label">Amount</label>
+                     {{ myfilter.form.amount }}
+                </div>
+
+                    <input type="submit" style="margin-left: 3%; margin-top: 2.2%; height:33px;" class=" btn btn-success btn-sm" value="Search">
+
+
+            </fieldset>
+        </form>
+    </div>
+        <div class="panel-body">
+
+
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Wallet ID</th>
+                        <th>Amount</th>
+                        <th>Transaction Type</th>
+                        <th>Transaction Date</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wallet_transaction in obj %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ wallet_transaction.wallet.id}}</td>
+                        <td> {{ wallet_transaction.amount }}</td>
+                        <td> {{ wallet_transaction.transaction_type}}</td>
+                        <td> {{ wallet_transaction.transaction_date}}</td>
+                        <td><button class="btn btn-primary"><a style="text-decoration:none; color:white"
+                           href="{% url 'wallet_manager:wallet_transaction_view' wallet_transaction.id %}" ><i class="fa fa-eye" style="color:white;font-size:20px;"></i></a>
+                           </button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+        </div>
+    </div>
+    {% endblock %}

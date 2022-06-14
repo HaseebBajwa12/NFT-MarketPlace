@@ -1,0 +1,43 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="justify-content-center modal-header">
+            <div class="row">
+                <div class="col-12">
+                <h4 class="mb-0 mb-md-3 mt-0" style="text-align:center"> Wallet Transaction</h4>
+            </div>
+            </div>
+        </div>
+        <div class="modal-body">
+        <form class="text-left">
+            <div class="d-flex name-email">
+                <div class="flex-fill form-group">
+                    <label class="label-font mr-2">Wallet : </label>
+                    <span class="field-value">{{ wallet_trans.wallet.id }}</span>
+                </div></div><div class="d-flex name-email">
+            <div class="form-group">
+                <label class="label-font mr-2">Transaction Ammount :</label>
+                <span class="field-value"> {{ wallet_trans.amount }} </span>
+            </div>
+        </div>
+            <div class="d-flex name-email">
+                <div class="form-group">
+                    <label class="label-font">Transaction Type : </label>
+                    <span class="field-value">{{ wallet_trans.transaction_type }}</span>
+                </div>
+            </div>
+            <div class="d-flex name-email">
+                <div class="form-group">
+                    <label class="label-font mr-2">Transaction Date : </label>
+                    <span class="field-value">{{wallet_trans.transaction_date}}</span>
+                </div>
+            </div>
+
+        </form>
+    </div>
+        <div class="modal-footer">
+           <a href="{% url 'wallet_manager:wallet-transaction'%}" style="float:right" class="btn btn-primary">Close</a>
+        </div>
+    </div>
+    {% endblock %}

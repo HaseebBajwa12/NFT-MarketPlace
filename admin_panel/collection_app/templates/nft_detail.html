@@ -1,0 +1,162 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+    <style>
+        #box {
+            padding-top: 120px;
+        }
+    </style>
+    <div class="main" style="width:-webkit-fill-available;">
+        <div class="container">
+            <h4 class="card-title">Information</h4>
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="card ">
+
+                        <div class="card-body">
+                            <img src="{{ nft.image.url }}" style="width:237px;height:233px;border-radius:10px"></div>
+                    </div>
+                </div>
+                <div class="col-md-9" style="line-height:30px">
+                    <ul class="nft_detail-holder list-unstyled">
+                        <li>
+                            <strong class="" >Name : </strong>
+                            <span class="'label-value"  >{{ nft.name }}</span>
+                         </li>
+                        <li>
+                            <strong class="">Description : </strong>
+                            <span class="'label-value" >{{ nft.description }}</span>
+                            {#               <p>{{nft.name}}</p>#}
+                        </li>
+                        <li>
+                            <strong class="">Current Price : </strong>
+                            <span class="'label-value">{{ nft.price }}</span>
+                            {#               <p>{{nft.name}}</p>#}
+                        </li>
+                        <li>
+                            <strong class="">Creater :</strong>
+                            <span class="'label-value">{{ nft.owner.first_name }}({{ nft.owner.email }})</span>
+                            {#               <p>{{nft.name}}</p>#}
+                        </li>
+                        <li>
+                            <strong class="">Owner :</strong>
+                            <span class="'label-value">{{ nft.owner.first_name }}({{ nft.owner.email }})</span>
+                            {#               <p>{{nft.name}}</p>#}
+                        </li>
+
+                    </ul>
+                    <div class="collection-detail d flex align-items-center">
+                        <div class="collection-image-holder mr-2">
+                            <img src="{{ nft.image.url }}" style="width:50px;height:auto;border-radius:20px">
+                            <span><strong class="">Collection : </strong></span>
+
+                            <span class="'label-value">{{ nft.name }}</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        {#        <h5 class="card-title ">Name</h5>#}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section id="box">
+            <div class="container-fluid">
+                <!-- DRAG/DROP COLUMNS REORDER -->
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Offers</h3>
+
+                    </div>
+
+
+                    <div class="panel-body ">
+
+
+                        <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Offer By</th>
+                                <th>Price</th>
+                                <th>Bidding Date</th>
+                                <th>Expiry Date</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for bidding_obj in obj %}
+
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ bidding_obj.offer_by }}</td>
+
+                                    <td>{{ bidding_obj.price }}</td>
+                                    <td>{{ bidding_obj.bidding_date }}</td>
+                                    <td>{{ bidding_obj.expiry_date }}</td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

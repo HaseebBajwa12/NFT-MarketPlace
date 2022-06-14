@@ -1,0 +1,52 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+<html>
+<head>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div>
+
+
+
+
+<form method="post" class="mx-auto">
+    {% csrf_token %}
+    <h3 style="margin-left:355px" >Change Your Password</h3>
+    {% if messages %}
+    {% for message in messages %}
+    <p class="alert alert-success">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% if form.non_field_errors %}
+    {% for error in form.non_filed_errors %}
+    <span >{{error}}</span>
+    {% endfor %}
+    {% endif %}
+
+    {% for fm in form %}
+    <div class="col-sm-2" style="margin-left:90px;margin-top:70px" >
+    {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
+    </div>
+
+    {% endfor %}
+<!--    <a href="{% url 'admin_user:home' %}" class="btn btn-success"> Update Password</a>-->
+  <button type="submit" class="btn btn-success" style="margin-left:400px;margin-top:60px">Change Password</button>
+    </form>
+    </div>
+     </div>
+
+      </div>
+</body>
+</html>
+     <script>
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+
+{% endblock %}

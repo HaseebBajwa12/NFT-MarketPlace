@@ -1,0 +1,167 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+ <script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  var y = document.getElementById("myDIV2");
+  console.log(x.style.display);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.height = "120px";
+  } else {
+    x.style.display = "none";
+    y.style.height = "80px";
+  }
+}
+
+</script>
+
+<script>
+    window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+
+{% if message %}
+            <div id="delete-col" class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <strong>Deleted!</strong> Wallet Deleted Successfully..
+            </div>
+        {% endif %}
+
+
+
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Wallet Management</h3>
+        </div>
+        <div class="panel-heading" id="myDIV2" style="height:80px">
+         <br>
+        <button class="btn btn-success" style="float:right" type="button" onclick="myFunction()">Filter</button>
+        <form id="myDIV" style="display:none" class="form-horizontal" method="get">
+            {% csrf_token %}
+            <br><br>
+            <fieldset style="margin-bottom:40px">
+            <!--                {{myfilter.form.as_p}}-->
+                <div class="form-group col-md-2">
+                    <label for="inputEmail4" class="col-form-label">User</label>
+                       {{ myfilter.form.user }}
+                </div>
+                <!--                    </div>-->
+                <!--                    </div>-->
+                <div class="form-group col-md-2" style="margin-left: 1%;">
+                   <label for="inputEmail4" class="col-form-label">Wallet Address</label>
+                      {{ myfilter.form.wallet_address }}
+                </div>
+
+                    <input type="submit" style="margin-left: 3%; margin-top:1.2%; height:33px;" class=" btn btn-success btn-sm" value="Search">
+
+
+            </fieldset>
+        </form>
+    </div>
+        <div class="panel-body">
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>User</th>
+                        <th>Current Balance</th>
+                        <th>Wallet Address</th>
+                        <th>Is Verified</th>
+                        <th>Is Active</th>
+                         <th>View</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wallet in obj %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ wallet.user }}</td>
+                        <td> {{ wallet.current_balance }}</td>
+                        <td> {{ wallet.wallet_address }}</td>
+                        <td>{{wallet.is_verified}}</td>
+                        <td>{{wallet.is_active}} </td>
+                        <td><button class="btn btn-primary"><a style="text-decoration:none; color:white"
+                           href="{% url 'wallet_manager:wallet_view' wallet.id  %}" ><i class="fa fa-eye" style="color:white;font-size:20px;"></i></a>
+                           </button></td>
+                                          <td>
+
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#{{ wallet.id }}2">
+                             <a style="text-decoration:none; color:white"
+                            ><i class="fa fa-trash"></i> Delete</a>
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{ wallet.id }}2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Do you want to delete?</p>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger"><a style="text-decoration:none; color:white"
+                           href="{% url 'wallet_manager:wallet-delete' wallet.id %}" ><i class="fa fa-trash"></i> Delete</a></button>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+        </div>
+    </div>
+ <script>
+   $(document).on('click', '.confirm-delete', function(){
+    return confirm('Are you sure you want to delete this?');
+   })
+
+ </script>
+    {% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'nft_admin/index.html' %}
+
+{% block content %}
+<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="content-heading clearfix">
+            <div class="heading-left">
+                <h1 class="page-title">Update Category</h1>
+                <p class="page-subtitle">Update your Category</p>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- SUBMIT TICKETS -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Update Category</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal"
+                                  action="/admin_site/update_category/{{ object.id }}/"
+                                  role="form" method="post"
+                                  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <fieldset>
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="name" class="form-control"
+                                                   value="{{ object.name }}" required>
+                                            {% if errors and object.name %}
+                                            <p>{{ errors.name }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <label for="name" class="col-sm-3 control-label">Is Active</label>
+                                        <div class="col-sm-9">
+                                            <input type="checkbox" name="is_active" class="form-control"
+                                                   {% if object.is_active %} checked {% else %} unchecked {% endif %}>
+                                        </div>
+                                        <label for="name" class="col-sm-3 control-label">Is Removed</label>
+                                        <div class="col-sm-9">
+                                            <input type="checkbox" name="is_removed" class="form-control"
+                                                   {% if object.is_removed %} checked {% else %} unchecked {% endif %}>
+                                        </div>
+
+                                        <div class="form-group text-center">
+                                            <input type="submit" style="margin-top: 20px" class="mt-5 btn btn-success" value="Update Collection">
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+django
+dj_database_url
+djangorestframework
+drf_yasg
+djoser
+psycopg2-binary
+pillow
+django-jazzmin
+gunicorn
+django-cors-headers
+python-dotenv
+django-cors-headers
+django_filter
+django_summernote
+django_bootstrap5
+

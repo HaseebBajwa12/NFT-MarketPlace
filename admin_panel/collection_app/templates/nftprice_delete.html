@@ -1,0 +1,15 @@
+{% extends 'nft_admin/index.html' %}
+{% block content %}
+
+
+<div class="card-body">
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are your sure you want to Delete this History? <b>"{{nft_obj}}"</b> </p>
+        <input class="button" type="submit" value="Delete" />
+    </form>
+</div>
+
+
+
+{% endblock content %}

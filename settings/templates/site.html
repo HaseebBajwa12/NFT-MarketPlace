@@ -1,0 +1,83 @@
+{% extends 'nft_admin/index.html' %}
+
+{% block content %}
+    <!-- MAIN CONTENT -->
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Site setting</h3>
+            </div>
+            <div class="panel-body">
+ {% if messages %}
+                     <ul class="alert alert-success alert-dismissible" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                            {{ message }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                         <script>
+window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+            </script>
+                <form method="post" class="form-horizontal" action="{% url 'settings:site'%}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div style="margin-left:300px">
+                        {{ form.email.label_tag}}
+                        </div>
+                    {{ form.email}}
+                    </div>
+                     <div class="form-group">
+                          <div style="margin-left:300px">
+                        {{ form.mobile_number.label_tag}}
+                        </div>
+                    {{ form.mobile_number}}
+                    </div>
+                    <div class="form-group">
+                         <div style="margin-left:300px">
+                        {{ form.phone_number.label_tag}}
+                        </div>
+                    {{ form.phone_number}}
+                    </div>
+                    <div class="form-group">
+                         <div style="margin-left:300px">
+                        {{ form.address.label_tag}}
+                        </div>
+                    {{ form.address}}
+                    </div>
+                    <div class="form-group">
+                         <div style="margin-left:300px">
+                        {{ form.description.label_tag}}
+                        </div>
+                    {{ form.description}}
+                    </div>
+                    <div class="form-group">
+                         <div style="margin-left:300px">
+                        {{ form.mailgun_domain.label_tag}}
+                        </div>
+                    {{ form.mailgun_domain}}
+                    </div>
+                    <div class="form-group">
+                    <div style="margin-left:300px">
+                        {{ form.mailgun_Api_Key.label_tag}}
+                        </div>
+                    {{ form.mailgun_Api_Key}}
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input type="submit" class=" btn btn-info" value="Update" {{ 'site.html' }}>
+                    </div>
+                </form>
+
+            </div>
+    </div>
+</div>
+
+{% endblock %}

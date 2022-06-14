@@ -1,0 +1,36 @@
+{% extends 'nft_admin/index.html' %}
+
+{% block content %}
+    <!-- MAIN CONTENT -->
+
+
+
+
+                <div class="col-md-10">
+                    <!-- SUBMIT TICKETS -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Update Email</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <form method="post">
+                                {% csrf_token %}
+                                  {{ form.as_p }}
+                                <div class="form-group text-center">
+                                        <input type="submit" class=" btn btn-info" value="Update">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+ <script>
+window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+            </script>
+
+{% endblock %}

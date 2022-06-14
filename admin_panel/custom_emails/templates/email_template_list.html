@@ -1,0 +1,117 @@
+{% extends 'nft_admin/index.html' %}
+{% block style %}
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            var y = document.getElementById("myDIV2");
+            console.log(x.style.display);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                y.style.height = "180px";
+            } else {
+                x.style.display = "none";
+                y.style.height = "120px";
+            }
+        }
+
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+{% endblock %}
+{% block content %}
+<!--    {% if message %}-->
+<!--        <div id="delete-col" class="alert alert-danger alert-dismissible" role="alert">-->
+<!--            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span-->
+<!--                    aria-hidden="true">&times;</span></button>-->
+<!--            <strong>Deleted!</strong> Email Deleted Successfully..-->
+<!--        </div>-->
+<!--    {% endif %}-->
+{% if messages %}
+      {% for message in messages %}
+       <p class="alert alert-success">  {{message}} </p>
+        {% endfor %}
+    {% endif %}
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Email Templates</h3>
+        </div>
+
+        <div class="panel-body">
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Type</th>
+                    <th>Subject</th>
+                   <th>Edit</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for record in obj %}
+                    <tr>
+                        <td>
+
+                            {% if is_paginated %}
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+                            {% else %}
+                                {{ forloop.counter }}
+                            {% endif %}
+                        </td>
+                        <td>{{ record.type }}</td>
+                        <td>{{ record.subject }}</td>
+                        <td>
+                            <div class="btn-group-vertical ">
+{#                                    glyphicon glyphicon-pencil#}
+                                    <a href="{% url 'custom_emails:update-email-template' record.id %}"
+                                       class=" btn btn-info btn-sm"
+                                       style="text-decoration:none; color:white"><i class="fa fa-pencil-square-o"
+                                                                                    style="color:white;font-size:20px;"></i><b>Update</b></a>
+                            </div>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+            <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+        </div>
+    </div>
+{% endblock %}

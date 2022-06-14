@@ -1,0 +1,45 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="justify-content-center modal-header">
+            <div class="row">
+                <div class="col-12">
+                <h4 class="mb-0 mb-md-3 mt-0" style="text-align:center">Reported NFT</h4>
+            </div>
+            </div>
+        </div>
+        <div class="modal-body">
+        <form class="text-left">
+            <div class="d-flex name-email">
+                <div class="flex-fill form-group">
+                    <label class="label-font mr-2">NFT : </label>
+                    <span class="field-value">{{ reported_nft_list.nft}}</span>
+                </div></div><div class="d-flex name-email">
+            <div class="form-group">
+                <label class="label-font mr-2">Reporter :</label>
+                <span class="field-value"> {{ reported_nft_list.reporter }} </span>
+            </div>
+        </div>
+            <div class="d-flex name-email">
+                <div class="form-group">
+                    <label class="label-font">Report Type : </label>
+                    <span class="field-value">{{ reported_nft_list.report_type }}</span>
+                </div>
+            </div>
+            <div class="d-flex name-email">
+                <div class="form-group">
+                    <label class="label-font mr-2">Date : </label>
+                    <span class="field-value">{{ reported_nft_list.date }}</span>
+                </div>
+            </div>
+
+        </form>
+    </div>
+        <div class="modal-footer">
+           <a href="{% url 'nft_management:list-reported-nft'%}" style="float:right" class="btn btn-primary">Close</a>
+        </div>
+    </div>
+    {% endblock %}
+
+

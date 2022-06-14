@@ -1,0 +1,119 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+<div class="main">
+				<!-- MAIN CONTENT -->
+				<div class="main-content">
+					<div class="content-heading clearfix">
+						<div class="heading-left">
+							{% if messages %}
+                                  {% for message in messages %}
+                                   <p class="alert alert-info">  {{message}} </p>
+                                    {% endfor %}
+                                {% endif %}
+
+<!--					<div class="container-fluid">-->
+<!--						<div class="row">-->
+<!--							<div class="col-md-8">-->
+<!--								&lt;!&ndash; SUBMIT TICKETS &ndash;&gt;-->
+<!--								<div class="panel">-->
+<!--									<div class="panel-heading">-->
+<!--										<h3 class="panel-title">update Profile</h3>-->
+<!--									</div>-->
+
+									<div class="panel-body ">
+
+										<form class="form-horizontal" role="form" method="POST" action="{% url 'admin_user:update_profile' object.user_id %}">
+
+											{% csrf_token %}
+
+											<fieldset>
+												{% if msg %}
+												<legend>User Information {{msg}}</legend>
+												{% endif %}
+												<div class="form-group">
+													<label for="ticket-name" class="col-sm-3 control-label">Profile_Image</label>
+													<div class="col-sm-9">
+														<input type="file" class="form-control" name="profile_image"  >{{object.profile_image}}
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="ticket-name" class="col-sm-3 control-label">banner_Image</label>
+													<div class="col-sm-9">
+														<input type="file" class="form-control" name="banner_image" >{{object.banner_image}}
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="ticket-email" class="col-sm-3 control-label">Facebook_Link</label>
+													<div class="col-sm-9">
+
+														<input type="text" class="form-control" name="facebook_link" value={{object.facebook_link}} >
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="ticket-name" class="col-sm-3 control-label">Twitter_Link</label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control" name="twitter_link" value={{object.twitter_link}} >
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="ticket-name" class="col-sm-3 control-label">google_plus_link</label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control" name="google_plus_link" value={{object.google_plus_link}}>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="ticket-name" class="col-sm-3 control-label">Vine_link</label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control" name="vine_link" value={{object.vine_link}} >
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label for="ticket-priority" class="col-sm-3 control-label">User</label>
+													<div class="col-sm-9">
+														<select id="ticket-priority" name="user" class="form-control">
+
+															<option  name="user" value="{{object.id}}">{{ object }}</option>
+
+
+
+														</select>
+													</div>
+
+
+
+												<div class="form-group text-center">
+
+													<input type="submit" class=" btn btn-success" value="Update" style="margin-top:10px">
+													 <a href="{% url 'admin_user:home'   %}" class="btn btn-warning " style="margin-top:10px;margin-left:20px">cancel</a>
+
+
+												</div>
+
+
+											</fieldset>
+
+										</form>
+									</div>
+								</div>
+								<!-- END SUBMIT TICKETS -->
+								<!-- SIGN IN -->
+
+							</div>
+
+								<!-- SIGN IN -->
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END MAIN CONTENT -->
+
+     <script>
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+{% endblock content %}

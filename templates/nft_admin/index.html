@@ -1,0 +1,496 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <title> NFT Admin </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/themify-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/x-editable/bootstrap3-editable/css/bootstrap-editable.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/dropzone/dropzone.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-tour/css/bootstrap-tour.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/jqvmap/jqvmap.min.css' %}">
+     <link rel="icon" href="{% static 'logo/favicon.svg' %}" type="image/svg">
+
+    {% block style %} {% endblock %}
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'custom/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'custom/css/demo.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="brand">
+            <a href="{% url 'admin_side:dashboard' %}">
+                <img src="{% static 'logo/favicon.svg' %}" alt="NFT MarketPlace Logo" style="width:35px;height:35px;"
+                     class="img-responsive logo">
+            </a>
+        </div>
+        <div class="container-fluid">
+            <form class="navbar-form navbar-left">
+                <a href="{% url 'admin_side:dashboard' %}">
+                    <h4 style='color:rgb(255, 238, 0)'><b>NFT MarketPlace</b></h4>
+                </a>
+            </form>
+            <div id="tour-fullwidth" class="navbar-btn">
+                <button type="button" class="btn-toggle-fullwidth"><i class="ti-arrow-circle-left"></i></button>
+            </div>
+
+            <div id="navbar-menu">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span><b>{{ user }}</b></span>
+                        </a>
+                        <ul class="dropdown-menu logged-user-menu">
+                            <li>
+                                <a href="{% url 'admin_user:profiles_view' user.id %}" class="ti-power-off">
+                                    <span><b><i class="fa fa-user" aria-hidden="true"></i>User Profile</b></span>
+                                </a>
+                                <a href="{% url 'admin_user:change-pass' %}" class="ti-power-off">
+                                    <span><b><i class="fa fa-key" aria-hidden="true"></i>Change Password</b></span>
+                                </a>
+                                <a href="{% url 'account:logout' %}" class="ti-power-off">
+                                    <span><b><i class="fa fa-sign-out" aria-hidden="true"></i>LogOut</b></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-nav" class="sidebar">
+        <nav>
+            <ul class="nav" id="sidebar-nav-menu">
+                <li class="menu-group">Main</li>
+                <li class="panel">
+                    <a href="#dashboards" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="active"><i
+                            class="ti-dashboard"></i> <span class="title"><i class="fa fa-pie-chart" aria-hidden="true"></i>Dashboards</span> <i
+                            class="icon-submenu ti-angle-left"></i></a>
+                    <div id="dashboards" class="collapse in">
+                        <ul class="submenu">
+                            <li><a href="{% url 'admin_side:dashboard' %}" class="active">Dashboard</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a   href="#subLayouts" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="fa fa-users" style="font-size:15px;margin-left:10px"></i> <span class="title"><i
+                            class="icon-submenu ti-angle-left caret "></i>ACCOUNTS</span></a>
+                    <div id="subLayouts" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'admin_user:home' %}"><i class="fa fa-user"></i>Users</a></li>
+                        </ul>
+                    </div>
+                </li>
+                 <li class="panel">
+                    <a href="#forms" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-receipt"></i> <span class="title"><i class="fa fa-th-large" aria-hidden="true"></i>NFT MANAGEMENT</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="forms" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'nft_management:nfts_list' %}"><i class="fa fa-diamond"
+                                                                                  aria-hidden="true"></i> NFT /
+                                Items</a></li>
+                              <li><a href="{% url 'nft_management:live-auction' %}"><i class="fa fa-diamond"
+                                                                                  aria-hidden="true"></i> Live Auctions
+                                </a></li>
+
+
+                            <li><a href="{% url 'nft_management:list-favorites-nft' %}"><i class="fa fa-heart"></i>Favorites
+                                NFT</a></li>
+                            <li><a href="{% url 'nft_management:list-reported-nft' %}"><i class="fa fa-flag"></i>Reported
+                                NFT</a></li>
+                            <li><a href="{% url 'nft_management:price-history-list' %}"><i class="fa fa-bar-chart"></i>NFT
+                                Price History</a></li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="panel">
+                    <a href="#appViews" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-layout-tab-window"></i> <span class="title"><i
+                                    class="fa fa-volume-control-phone"></i>CONTACT & FAQ</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="appViews" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'faq_contact:list-contact' %}"><i
+                                    class="fa fa-volume-control-phone"></i>Contact</a></li>
+                            <li><a href="{% url 'faq_contact:list-faq' %}"><i class="fa fa-question-circle"></i>FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a href="#tables" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-layout-grid2 "></i> <span class="title"><i class="fa fa-money"
+                                                                              aria-hidden="true"></i>BIDDING</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="tables" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'bidding:bidding-list' %}"><i class="fa fa-money"
+                                                                              aria-hidden="true"></i>Bidding</a></li>
+
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a href="#tab" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-layout-grid2 "></i> <span class="title"><i class="fa fa-tasks"
+                                                                                      aria-hidden="true"></i>ACTIVITIES</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="tab" class="collapse ">
+                        <ul class="submenu">
+
+                            <li><a href="{% url 'bidding:Nft-transaction-list' %}"><i class="fa fa-tasks"
+                                                                                      aria-hidden="true"></i>Activities</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a href="#ta" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-layout-grid2 "></i> <span class="title"><i class="fa fa-list-alt"></i>CATEGORIES</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="ta" class="collapse ">
+                        <ul class="submenu">
+
+                            <li><a href="{% url 'nft_management:list-category' %}"><i class="fa fa-list-alt"></i>Category</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a href="#taC" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-layout-grid2 "></i> <span class="title"><i class="fa fa-list"></i>COLLECTION</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="taC" class="collapse ">
+                        <ul class="submenu">
+
+                            <li><a href="{% url 'nft_management:list-collection' %}"><i class="fa fa-list"></i>Collections</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a href="#maps" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-map"></i> <span class="title"><i class="fa fa-credit-card-alt"
+                                                                                           aria-hidden="true"></i>WALLET</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="maps" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'wallet_manager:wallet' %}"><i class="fa fa-credit-card-alt"
+                                                                                           aria-hidden="true"></i>Wallet</a>
+                            </li>
+                            <li><a href="{% url 'wallet_manager:wallet-transaction' %}"><i class="fa fa-exchange"
+                                                                                           aria-hidden="true"></i>Wallet
+                                Transaction</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="panel">
+                    <a href="#em" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-map"></i> <span class="title"><i class="fa fa-envelope"></i>EMAIL TEMPLATES</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="em" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'custom_emails:email_list' %}"><i class="fa fa-envelope"></i>Email Templates</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+                <li class="panel">
+                    <a href="#settings" data-toggle="collapse" data-parent="#sidebar-nav-menu" class="collapsed"><i
+                            class="ti-receipt"></i> <span class="title"><i class="glyphicon glyphicon-cog"></i>SETTINGS</span> <i
+                            class="icon-submenu ti-angle-left caret"></i></a>
+                    <div id="settings" class="collapse ">
+                        <ul class="submenu">
+                            <li><a href="{% url 'settings:site' %}"><i class="glyphicon glyphicon-cog"
+                                                                                  aria-hidden="true"></i> Site Setting</a></li>
+                            <li><a href="{% url 'settings:social' %}"><i class="glyphicon glyphicon-cog"></i>Social Setting</a>
+                            </li>
+                            <li><a href="{% url 'settings:percentage' %}"><i class="glyphicon glyphicon-cog"></i>Percentage Setting</a>
+                            </li>
+                        </ul>
+                    </div>
+
+            </ul>
+        </nav>
+    </div>
+    <!-- END LEFT SIDEBAR -->
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="content-heading clearfix">
+                <div class="heading-left">
+                    <h1 class="page-title">Welcome to NFT MarketPlace Admin Site</h1>
+                    <p class="page-subtitle"></p>
+                </div>
+
+            </div>
+            <div class="container-fluid">
+                {% block content %}
+
+                <div class="row">
+                    <div class="row margin-bottom-50" style="margin-left:30px">
+                        <div class="col-md-3 col-xs-6">
+                            <div class="widget-metric_6 animate">
+                                <span class="icon-wrapper custom-bg-yellow"><i class="fa fa-user"></i></span>
+                                <div class="right">
+                                    <span class="value">{{ user_count }}</span>
+                                    <span class="title">Users</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6">
+                            <div class="widget-metric_6 animate">
+										<span class="icon-wrapper custom-bg-orange"><i class="fa fa-diamond"
+                                                                                       aria-hidden="true"></i></span>
+                                <div class="right">
+                                    <span class="value">{{ nft_count }}</span>
+                                    <span class="title">NFT's</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6">
+                            <div class="widget-metric_6 animate">
+										<span class="icon-wrapper custom-bg-blue3"><i class="fa fa-object-group"
+                                                                                      aria-hidden="true"></i></span>
+                                <div class="right">
+                                    <span class="value">{{ collection_count }}</span>
+                                    <span class="title">Collections</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6">
+                            <div class="widget-metric_6 animate">
+                                <span class="icon-wrapper custom-bg-green2"><i class="fa fa-list-alt"></i></span>
+                                <div class="right">
+                                    <span class="value">{{ category_count }}</span>
+                                    <span class="title">Categories</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="m-0">Bidding and Transaction</h5>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'bidding:bidding-list' %}"><i class="fa fa-money"
+                                                                                          aria-hidden="true"
+                                                                                          style="margin-right:10px"></i>
+                                                Bidding</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'bidding:Nft-transaction-list' %}"><i class="fa fa-exchange"
+                                                                                                  aria-hidden="true"
+                                                                                                  style="margin-right:10px"></i>Activities</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="m-0">Contacts and FAQ Management</h5>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'faq_contact:list-contact' %}"><i
+                                                    class="fa fa-volume-control-phone" style="margin-right:10px"></i>
+                                                Contacts</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'faq_contact:list-faq' %}"><i class="fa fa-question-circle"
+                                                                                          style="margin-right:10px"></i>FAQ's</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="m-0">Wallet Management</h5>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'wallet_manager:wallet' %}"><i class="fa fa-credit-card-alt"
+                                                                                           aria-hidden="true"
+                                                                                           style="margin-right:10px"></i>Wallet
+                                                Detail</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'wallet_manager:wallet-transaction' %}"><i
+                                                    class="fa fa-exchange" aria-hidden="true"
+                                                    style="margin-right:10px"></i>Wallet Transactions</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                         <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="m-0 ">Settings</h5>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'settings:site' %}"><i class="glyphicon glyphicon-cog"
+                                                                                           aria-hidden="true"
+                                                                                           style="margin-right:10px"></i>SiteSetting
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'settings:social' %}"><i
+                                                    class="glyphicon glyphicon-cog" aria-hidden="true"
+                                                    style="margin-right:10px"></i>SocialSetting</a>
+                                        </td>
+                                    </tr>  <tr>
+                                        <td>
+                                            <a href="{% url 'settings:percentage' %}"><i
+                                                    class="glyphicon glyphicon-cog" aria-hidden="true"
+                                                    style="margin-right:10px"></i>PercentageSetting</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="m-0">Accounts</h5>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'admin_user:home' %}"><i class="fa fa-user"
+                                                                                     style="margin-right:10px"></i>Users</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="m-0">NFT Management</h5>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'nft_management:nfts_list' %}"><i class="fa fa-diamond"
+                                                                                              aria-hidden="true"
+                                                                                              style="margin-right:10px"></i>NFT
+                                                / Items</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'nft_management:list-category' %}"><i class="fa fa-list-alt"
+                                                                                                  style="margin-right:10px"></i>Category</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'nft_management:list-collection' %}"><i class="fa fa-list"
+                                                                                                    style="margin-right:10px"></i>Collection</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'nft_management:list-favorites-nft' %}"><i
+                                                    class="fa fa-heart" style="margin-right:10px"></i>Favorites NFT</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'nft_management:list-reported-nft' %}"><i class="fa fa-flag"
+                                                                                                      style="margin-right:10px"></i>Reported
+                                                NFT</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'nft_management:price-history-list' %}"><i
+                                                    class="fa fa-bar-chart" style="margin-right:10px"></i>NFT Price
+                                                History</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock%}
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2021 <a href="https://www.arhamsoft.com" target="_blank">ArhamSoft (Pvt)
+                Limited</a>. All
+                Rights Reserved.</p>
+        </div>
+    </footer>
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'scripts/klorofilpro-common.js' %}"></script>
+<!-- DEMO PANEL -->
+<!-- for demo purpose only, you should remove it on your project directory -->
+</body>
+</html>

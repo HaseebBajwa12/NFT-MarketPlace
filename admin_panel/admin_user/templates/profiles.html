@@ -1,0 +1,77 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+<div class="main" style="width:-webkit-fill-available;">
+				<!-- MAIN CONTENT -->
+							<div class="row panel-body ">
+                                <div class="col-12">
+                                    <p class="alert alert-info"> All Profiles </p>
+                                </div>
+                                 <div class="col-12">
+                                  <form method="GET">
+                                      {{ pfilter.form }}
+                                <button type="submit" class="btn btn-success">Search</button>
+                                  </form>
+                                   </div>
+                                <div class="col-12" style="overflow:auto;">
+                                {% if user %}
+								<table class="table">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Sr.No</th>
+                                      <th scope="col">Profile Image</th>
+                                      <th scope="col">Facebook_link</th>
+                                      <th scope="col">Twitter_link</th>
+                                      <th scope="col">Google_plus_link</th>
+                                        <th scope="col">Vine Link</th>
+                                      <th scope="col">Updated_at</th>
+                                         <th scope="col">is_removed</th>
+                                        <th scope="col">User</th>
+                                        <th scope="col">Banner_image</th>
+                                        <th scope="col">About</th>
+                                      <th scope="col"></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  {% for profile in obj %}
+                                    <tr>
+                                         <th>{{forloop.counter}}</th>
+                                      <th>{{profile.profile_image}}</th>
+                                      <td>{{profile.facebook_link}}</td>
+                                      <td>{{profile.twitter_link}}</td>
+                                      <td>{{profile.google_plus_link}}</td>
+                                        <th>{{profile.vine_link}}</th>
+                                      <td>{{profile.updated_at}}</td>
+                                        <td>{{profile.is_removed}}</td>
+                                         <td>{{profile.user}}</td>
+                                         <td>{{profile.banner_image}}</td>
+                                         <td>{{profile.about}}</td>
+                                      <td>
+                                          <div class="btn-group-vertical ">
+                                             <a href="{% url 'admin_user:deleteprofile' profile.id %}" class="btn btn-danger btn-sm  " style="margin:3px;"><i class="fa fa-trash"></i>Delete</a>
+                                          </div>
+                                      </td>
+                                        <td>
+                                          <div class="btn-group-vertical ">
+                                                <a href="#" class=" btn btn-info btn-sm " style="margin:3px;"><i class="fa fa-eye" aria-hidden="true" style="color:white;font-size:20px;"></i></a>
+                                          </div>
+                                      </td>
+                                    </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                                {% else %}
+                              <h4 class="text-center alert alert-warning">No Records</h4>
+                             {% endif %}
+
+                                      {% if obj.has_previous %}
+                                    <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+                                     <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+                                    {% endif %}
+                                    page{{obj.number}} of {{obj.paginator.num_pages}}
+
+                                     {% if obj.has_next %}
+                                    <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+                                     <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+                                    {% endif %}
+						</div></div></div></div>
+	{% endblock content %}

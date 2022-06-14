@@ -1,0 +1,140 @@
+{% extends 'nft_admin/index.html' %}
+{% load static %}
+{% block content %}
+<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="content-heading clearfix">
+            <div class="heading-left">
+                <h1 class="page-title">Add Nft</h1>
+                <p class="page-subtitle">Add your Nft</p>
+            </div>
+
+            <ul class="breadcrumb">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#">Forms</a></li>
+                <li class="active">Form Layouts</li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- SUBMIT TICKETS -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Add NFT</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" method="POST" action="{% url 'nft_management:nfts_create' %}">
+                                {% csrf_token %}
+
+                                <fieldset>
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="name" class="form-control" required>
+                                        </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Description</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="description" class="form-control" required>
+                                        </div>
+                                    </div>
+                                        <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Sale_Type</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="sale_type" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-attachment" class="col-sm-3 control-label">
+                                            Image</label>
+                                        <div class="col-md-9">
+                                            <input type="file" name="image" id="logo-attachment" required>
+                                            <p class="help-block">
+                                                <em>Valid file type: .jpg, .png File size max: 1 MB</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                      <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">no_of_copies</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="no_of_copies" class="form-control" required>
+                                        </div>
+                                    </div>
+                                        <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">size</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="size" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                     <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">total_views</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="total_views" class="form-control" required>
+                                        </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">royalty</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="royalty" class="form-control" required>
+                                        </div>
+                                    </div>
+                                         <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Price</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="price" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="category" class="col-sm-3 control-label">Collection</label>
+                                        <div class="col-sm-9">
+
+                                            <select id="category" name="collection" class="form-control">
+                                               {% for coll in collection_obj %}
+                                                <option name="collection" value="{{ coll.id }}">{{coll.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user" class="col-sm-3 control-label">Owner</label>
+                                        <div class="col-sm-9">
+                                            <select id="user" name="owner" class="form-control">
+                                                {% for user in user_obj %}
+
+                                                <option name="user" value="{{user.id}}">{{ user }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group text-center">
+
+                                       <input type="submit" class=" btn btn-success" value="Create">
+                                    </div>
+
+                                </fieldset>
+
+                            </form>
+                        </div>
+                    </div>
+                    <!-- END SUBMIT TICKETS -->
+                    <!-- SIGN IN -->
+
+                </div>
+
+                <!-- SIGN IN -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+{% endblock %}

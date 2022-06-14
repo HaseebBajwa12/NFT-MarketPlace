@@ -1,0 +1,210 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block style %}
+
+<script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            var y = document.getElementById("myDIV2");
+            console.log(x.style.display);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                y.style.height = "150px";
+            } else {
+                x.style.display = "none";
+                y.style.height = "80px";
+            }
+        }
+
+</script>
+{% endblock %}
+{% block content %}
+<style>
+        #box {
+            padding-top: 120px;
+        }
+
+</style>
+
+<section id="box">
+    <div class="container-fluid">
+        <!-- DRAG/DROP COLUMNS REORDER -->
+        <div class="panel">
+            <div class="panel-heading">
+                <button class="btn btn-success" style="float:right" type="button" onclick="myFunction()">Filter</button>
+                <br>
+                <h3 class="panel-title">AUCTIONS</h3>
+                <form id="myDIV" style="display:none" class="form-horizontal" method="get">
+                    {% csrf_token %}
+                    <br><br>
+
+<fieldset style="margin-bottom:40px">
+                <div class="form-group col-md-2">
+                    <label for="inputEmail4" class="col-form-label">Name:</label>
+                       {{ myfilter.form.name }}
+                </div>
+                <div class="form-group col-md-2" style="margin-left: 1%; ">
+                  <label for="inputEmail4" class="col-form-label">Owner:</label>
+                    {{ myfilter.form.owner }}
+                </div>
+                 <div class="form-group col-md-2" style="margin-left: 1%; ">
+                  <label for="inputEmail4" class="col-form-label">Price:</label>
+                    {{ myfilter.form.price }}
+                </div>
+
+                    <input type="submit" style="margin-left: 2%; margin-top: 20px;" class=" btn btn-success btn" value="Search">
+            </fieldset>
+                </form>
+            </div>
+
+            <div class="panel-body ">
+
+                <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Sr No.</th>
+                        <th>IMAGE</th>
+                        <th>NAME</th>
+                        <th>OWNER</th>
+                        <th>CURRENT PRICE</th>
+                        <th>END DATE</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for nft_obj in obj %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><img src="{{ nft_obj.image.url }} " style="width:40px;height:40px;border-radius:10px">
+
+                        <td>{{ nft_obj.name }}</td>
+                        <td>{{ nft_obj.owner }}</td>
+
+                        <td>{{ nft_obj.price }}</td>
+                        <td>{{ nft_obj.expiry_date }}</td>
+                        <td>{{ nft_obj.sale_type }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#{{ nft_obj.id }}2">
+                                <a style="text-decoration:none; color:white"
+                                ><i class="fa fa-eye"></i> View</a>
+                            </button>
+                            <div class="modal fade" id="{{ nft_obj.id }}2" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="justify-content-center modal-header">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h4 class="mb-0 mb-md-3 mt-0"
+                                                        style="text-align:center"> NFT
+                                                        Detail</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="text-left">
+                                                <div class="d-flex name-email">
+                                                    <div class="flex-fill form-group">
+                                                        <label class="label-font mr-2">Image: </label>
+                                                        <div class="card ">
+                                                            <div class="card-body"
+                                                                 style="margin-left: 120px">
+                                                                <img src="{{ nft_obj.image.url }}"
+                                                                     style="width:237px;height:233px;border-radius:10px">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex name-email">
+                                                    <div class="form-group">
+                                                        <label class="label-font mr-2">Name: </label>
+                                                        <span class="field-value"> {{ nft_obj.name }} </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex name-email">
+                                                    <div class="form-group">
+                                                        <label class="label-font">Price
+                                                            : </label>
+                                                        <span class="field-value">{{ nft_obj.name }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex name-email">
+                                                    <div class="form-group">
+                                                        <label class="label-font mr-2">Status
+                                                            : </label>
+                                                        <span class="field-value">{{ nft_obj.sale_type }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex name-email">
+                                                    <div class="form-group">
+                                                        <label class="label-font mr-2">Creator
+                                                            : </label>
+                                                        <span class="field-value">{{ nft_obj.owner }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex name-email">
+                                                    <div class="form-group">
+                                                        <label class="label-font mr-2">Owner
+                                                            : </label>
+                                                        <span class="field-value">{{ nft_obj.owner }}</span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+{% endblock content %}

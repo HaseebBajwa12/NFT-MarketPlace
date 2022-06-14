@@ -1,0 +1,116 @@
+{% extends 'nft_admin/index.html' %}
+
+{% block content %}
+<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="content-heading clearfix">
+            <div class="heading-left">
+                <h1 class="page-title">Update Collection</h1>
+                <p class="page-subtitle">Update your Collection</p>
+            </div>
+            <ul class="breadcrumb">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#">Forms</a></li>
+                <li class="active">Form Layouts</li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- SUBMIT TICKETS -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Update Collection</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal"
+                                  action="/api/update_collection/{{ object.id }}"
+                                  role="form" method="post"
+                                  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <fieldset>
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="name" class="form-control"
+                                                   value="{{ object.name }}" required>
+                                            {% if errors and object.name %}
+                                            <p>{{ errors.name }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-attachment" class="col-sm-3 control-label">
+                                            Logo Image</label>
+                                        <div class="col-md-9">
+                                            {% if object.logo_image %}
+                                            <input type="file" name="logo_image" id="logo-attachment1"
+                                                   value="{{ object.logo_image.url }}" required>
+                                            <p>{{ object.logo_image.url }}</p>
+                                            {% else %}
+                                            <input type="file" name="logo_image" id="logo-attachment2"
+                                                   value="{{ object.logo_image }}" required>
+                                            <p>{{ object.logo_image }}</p>
+                                            {% endif %}
+                                            <p class="help-block">
+                                                <em>Valid file type: .jpg, .png File size max: 1 MB</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-attachment" class="col-sm-3 control-label">
+                                            Banner Image</label>
+                                        <div class="col-md-9">
+                                            {% if object.banner_image %}
+                                            <input type="file" name="banner_image" id="banner-attachment1"
+                                                   value="{{ object.banner_image }}" required>
+                                            <p>{{ object.banner_image.url }}</p>
+                                            {% else %}
+                                            <input type="file" name="banner_image" id="banner-attachment2"
+                                                   value="{{ object.banner_image }}" required>
+                                            <p>{{ object.banner_image }}</p>
+                                            {% endif %}
+                                            <p class="help-block">
+                                                <em>Valid file type: .jpg, .png File size max: 1 MB</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-3 control-label">Description</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" name="description" id="ticket-message"
+                                                      rows="5" cols="30" placeholder="Message" required>{{ object.description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category" class="col-sm-3 control-label">Category</label>
+                                        <div class="col-sm-9">
+                                            <select id="category" name="category" class="form-control">
+                                                <option name="category" value="{{ category.id }}">{{ category.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user" class="col-sm-3 control-label">User</label>
+                                        <div class="col-sm-9">
+                                            <select id="user" name="user" class="form-control">
+                                                <option name="user" value="{{ user.id }}">{{ user.first_name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <input type="submit" class=" btn btn-success" value="Update Collection">
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

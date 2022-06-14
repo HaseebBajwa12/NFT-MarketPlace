@@ -1,0 +1,88 @@
+{% extends 'nft_admin/index.html' %}
+
+{% block content %}
+ <script>
+     function myFunction() {
+            var x = document.getElementById("myDIV");
+            var y = document.getElementById("myDIV2");
+            console.log(x.style.display);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                y.style.height = "150px";
+            } else {
+                x.style.display = "none";
+                y.style.height = "80px";
+            }
+        }
+    </script>
+<!-- DRAG/DROP COLUMNS REORDER -->
+{% if messages %}
+                     <ul class="alert alert-success alert-dismissible" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                            {{ message }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+             <script>
+window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+            </script>
+
+{#    {{ form.title.errors }}#}
+{#    {{ form.title.label_tag }}#}
+{#    {{ form.title }}#}
+{#    {{ form.description.errors }}#}
+{#    {{ form.description.label_tag }}#}
+{#    {{ form.description }}#}
+                <div class="col-md-10">
+                    <!-- SUBMIT TICKETS -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Update FAQ</h3>
+                                   <div class="alert alert-danger" {% if not errors %} style="display: none" {% endif %}>
+                            {% for key, value in errors.items %}
+                              <strong> {{ key }}</strong>{{ value }}.
+                            {% endfor %}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                            <form method="post">
+                                {% csrf_token %}
+                             <fieldset>
+                                    <div class="form-group">
+                                        <label style="color: black" for="title" class="col-sm-2 control-label">Title</label>
+                                        <div class="col-sm-10">
+{#                                            <input  style="margin-bottom: 10px; width: auto" type="text" class="form-control" name="title" value={{object.title}} pattern='[-_\.a-zA-Z,!? ]*$' title=" please enter characters only" >#}
+                                            {{ form.title }}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" >
+                                        <label style="color: black" for="id_description" class="col-sm-2 control-label">Description</label>
+                                        <div class="col-sm-10" style="margin-top:10px">
+                                            {{ form.description }}
+{#                                            <input  style="margin-bottom: 10px; width: auto" type="text" class="form-control" name="description" value={{object.description}} >#}
+
+                                        </div>
+
+                                    <div class="form-group text-center">
+                                        <input type="submit" class=" btn btn-info" value="Update FAQ">
+                                    </div>
+                                    </div>
+                             </fieldset>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}

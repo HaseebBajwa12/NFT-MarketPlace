@@ -1,0 +1,151 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+
+  <script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  var y = document.getElementById("myDIV2");
+  console.log(x.style.display);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.height = "120px";
+  } else {
+    x.style.display = "none";
+    y.style.height = "80px";
+  }
+}
+</script>
+
+ <script>
+    window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 1500);
+    </script>
+
+{% if message %}
+            <div id="delete-col" class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <strong>Deleted!</strong> NFT Transaction Deleted Successfully..
+            </div>
+        {% endif %}
+<div class="container-fluid">
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Activities</h3>
+        </div>
+        <div class="panel-heading" id="myDIV2" style="height:80px">
+         <br>
+        <button class="btn btn-success" style="float:right" type="button" onclick="myFunction()">Filter</button>
+        <form id="myDIV" style="display:none" class="form-horizontal" method="get">
+            {% csrf_token %}
+            <br><br>
+            <fieldset style="margin-bottom:40px">
+            <!--                {{myfilter.form.as_p}}-->
+                <div class="form-group col-md-2">
+                    <label for="inputEmail4" class="col-form-label">User</label>
+                       {{ myfilter.form.user }}
+                </div>
+                <!--                    </div>-->
+{#                <div class="form-group col-md-2" style="margin-left: 1%; ">#}
+{#                  <label for="inputEmail4" class="col-form-label">Seller</label>#}
+{#                    {{ myfilter.form.seller }}#}
+{#                </div>#}
+{#                <!--                    </div>-->#}
+{#                <div class="form-group col-md-2" style="margin-left: 1%;">#}
+{#                   <label for="inputEmail4" class="col-form-label">NFT</label>#}
+{#                     {{ myfilter.form.nft }}#}
+{#                </div>#}
+{#                <div class="form-group col-md-2" style="margin-left: 1%;">#}
+{#                   <label for="inputEmail4" class="col-form-label">Sold Pricce</label>#}
+{#                      {{ myfilter.form.sold_price }}#}
+{#                </div>#}
+
+                    <input type="submit" style="margin-left: 2%; margin-top: 1.2%; height:33px;" class=" btn btn-success btn-sm" value="Search">
+
+
+            </fieldset>
+        </form>
+    </div>
+        <div class="panel-body">
+
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                    <tr>
+                        <th>Sr. no</th>
+                        <th>CONTENT TYPE</th>
+                        <th>ACTION TIME</th>
+                        <th>USER</th>
+                        <th>ACTION</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nft_transaction in obj %}
+                    <tr>
+                                <td>{{ forloop.counter }}</td>
+                        <td> {{ nft_transaction.content_type}}</td>
+                        <td> {{ nft_transaction.action_time }}</td>
+                        <td> {{ nft_transaction.user}}</td>
+                        {% if nft_transaction.action_flag == 1 %}
+                        <td>ADDITION</td>
+                        {% elif nft_transaction.action_flag == 2 %}
+                                                <td>CHANGE</td>
+                        {% elif nft_transaction.action_flag == 3%}
+                        <td>DELETION</td>
+                        {% endif %}
+
+
+
+
+                            <!-- Modal -->
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <ul class="pagination">
+
+{% if obj.has_previous %}
+    <li><a href="?page={{ obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if obj.number|add:'-4' > 1 %}
+    <li><a href="?page={{ obj.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in obj.paginator.page_range %}
+    {% if obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > obj.number|add:'-5' and i < obj.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if obj.paginator.num_pages > obj.number|add:'4' %}
+    <li><a href="?page={{ obj.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if obj.has_next %}
+    <li><a href="?page={{ obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+
+        </div>
+    </div>
+    <script>
+   $(document).on('click', '.confirm-delete', function(){
+    return confirm('Are you sure you want to delete this?');
+   })
+
+ </script>
+    {% endblock %}
